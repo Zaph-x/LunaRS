@@ -65,17 +65,20 @@ fn print_lunar_phase_emoji(age: f64) -> () {
 fn main() {
     let mut show_moon: bool = false;
     let mut short_text: bool = false;
+    let mut print_age: bool = false;
     {
         let mut ap = ArgumentParser::new();
         ap.set_description("Show the current lunar phase");
         ap.refer(&mut show_moon).add_option(&["-e", "--emoji"], StoreTrue, "Show moon emoji instead of text");
         ap.refer(&mut short_text).add_option(&["-s", "--short-text"], StoreTrue, "Only print short text");
+        ap.refer(&mut print_age).add_option(&["-a", "--print-age"], StoreTrue, "Print the lunar age");
+
         ap.parse_args_or_exit();
     }
 
     let time_since_nm = time_since_nm();
     let current_day = calculate_lunar_days(time_since_nm);
-
+    if print_age { println!("{}", current_day); }
     if show_moon {
         print_lunar_phase_emoji(current_day);
     } else {
